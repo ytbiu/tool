@@ -108,6 +108,14 @@ func Test_isSame(t *testing.T) {
 			want: true,
 		},
 
+		{
+			args: args{
+				src: []int{1,2,3,4,5},
+				dst: []int{1,2,3,4,5},
+			},
+			want: true,
+		},
+
 
 		{
 			args: args{
