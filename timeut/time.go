@@ -8,7 +8,7 @@ func TickMil(t ...time.Time) int64 {
 	if len(t) == 0 {
 		return time.Now().Unix() * 1e3
 	}
-	return t[0].Unix()* 1e3
+	return t[0].Unix() * 1e3
 }
 
 func TickSec(t ...time.Time) int64 {

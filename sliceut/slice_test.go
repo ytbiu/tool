@@ -89,3 +89,39 @@ func TestRemove(t *testing.T) {
 		})
 	}
 }
+
+func Test_isSame(t *testing.T) {
+	type args struct {
+		src interface{}
+		dst interface{}
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			args: args{
+				src: []string{"1","2","3","4","5"},
+				dst: []string{"1","2","3","4","5"},
+			},
+			want: true,
+		},
+
+
+		{
+			args: args{
+				src: []string{"1","2","3","4","9"},
+				dst: []string{"1","2","3","4","5"},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := isSame(tt.args.src, tt.args.dst); got != tt.want {
+				t.Errorf("isSame() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

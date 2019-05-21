@@ -2,6 +2,7 @@ package sliceut
 
 import (
 	"reflect"
+	"sync"
 )
 
 func Contains(src interface{}, target interface{}) bool {
@@ -43,4 +44,48 @@ func toInfSlice(src interface{}) []interface{} {
 		infSlice[i] = v.Index(i).Interface()
 	}
 	return infSlice
+}
+
+func isSame(src,dst interface{}) bool  {
+
+	srcSlice := toInfSlice(src)
+	dstSlice := toInfSlice(dst)
+
+	if len(srcSlice) != len(dstSlice){
+		return false
+	}
+
+	dataC := make(chan interface{},1)
+	resC := make(chan bool,1)
+	wg := &sync.WaitGroup{}
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for _,e := range srcSlice{
+			dataC <- e
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for _,e := range dstSlice{
+			if <- dataC != e{
+				resC <- false
+			}
+		}
+	}()
+
+	go func() {
+		wg.Wait()
+		close(resC)
+	}()
+
+	for res := range resC{
+		return res
+	}
+
+	return true
+
 }
