@@ -28,7 +28,7 @@ func NewDispatcher(maxLimit int32) Dispatcher {
 		poolSize:     maxLimit,
 		jobC:         make(chan func(), maxLimit),
 		resizePeriod: time.Second * 3,
-		timer:        time.NewTimer(time.Second * 3),
+		timer:        time.NewTimer(waitSeconds),
 	}
 
 	d.workCancelCs = make([]chan struct{}, maxLimit)
@@ -55,7 +55,7 @@ func (d *dispatcher) dispatch() {
 }
 
 func (d *dispatcher) Go(jobs ...func()) {
-	d.timer.Reset(time.Second * 3)
+	d.timer.Reset(waitSeconds)
 	for _, job := range jobs {
 		if job == nil {
 			continue
