@@ -11,6 +11,7 @@ const waitSeconds = 3 * time.Second
 
 type Dispatcher interface {
 	Go(...func())
+	//getRunningJob() int32
 }
 
 type dispatcher struct {
@@ -72,7 +73,7 @@ func (d *dispatcher) Go(jobs ...func()) {
 	}
 }
 
-func (d *dispatcher) GetRunningJob() int32 {
+func (d *dispatcher) getRunningJob() int32 {
 	return atomic.LoadInt32(&d.runningJob)
 }
 
@@ -102,7 +103,7 @@ func (d *dispatcher) tryResize() {
 		default:
 		}
 
-		if d.GetRunningJob() == d.poolSize {
+		if d.getRunningJob() == d.poolSize {
 			go func() {
 				defer catch()
 				cancelC := make(chan struct{})
@@ -111,8 +112,14 @@ func (d *dispatcher) tryResize() {
 			}()
 			d.incPoolSize()
 		}
-		if d.GetRunningJob() < (1/2)*d.poolSize {
-			for i := 0; i < int((1/2)*d.poolSize); i++ {
+
+		minLimit := (1 / 2) * d.poolSize
+		if d.getRunningJob() < minLimit {
+			if minLimit <= 5 {
+				return
+			}
+
+			for i := 0; i < int(minLimit); i++ {
 				d.workCancelCs[i] <- struct{}{}
 			}
 		}
