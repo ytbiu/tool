@@ -29,8 +29,9 @@ func NewDispatcher(maxLimit int32) Dispatcher {
 		resizePeriod: time.Second * 3,
 	}
 
+	d.workCancelCs = make([]chan struct{},maxLimit)
 	for i := 0; i < int(maxLimit); i++ {
-		d.workCancelCs = append(d.workCancelCs, make(chan struct{}))
+		d.workCancelCs[i] = make(chan struct{})
 	}
 
 	go d.tryResize()
