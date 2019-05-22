@@ -1,8 +1,8 @@
 package stringut
 
 import (
-	"unsafe"
 	"strings"
+	"unsafe"
 )
 
 func StrAppend(sep string, vs ...string) string {
@@ -36,4 +36,3 @@ func AnyIsBlack(vs ...string) bool {
 	}
 	return false
 }
-

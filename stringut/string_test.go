@@ -18,7 +18,7 @@ func TestStrAppend(t *testing.T) {
 		{
 			args: args{
 				sep: "-",
-				vs:  []string{"1","2","3"},
+				vs:  []string{"1", "2", "3"},
 			},
 			want: "1-2-3",
 		},
@@ -93,14 +93,14 @@ func TestAnyIsBlack(t *testing.T) {
 	}{
 		{
 			args: args{
-				vs: []string{"1","a",""},
+				vs: []string{"1", "a", ""},
 			},
 			want: true,
 		},
 
 		{
 			args: args{
-				vs: []string{"1","a","b"},
+				vs: []string{"1", "a", "b"},
 			},
 			want: false,
 		},

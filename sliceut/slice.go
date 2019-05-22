@@ -46,23 +46,23 @@ func toInfSlice(src interface{}) []interface{} {
 	return infSlice
 }
 
-func isSame(src,dst interface{}) bool  {
+func isSame(src, dst interface{}) bool {
 
 	srcSlice := toInfSlice(src)
 	dstSlice := toInfSlice(dst)
 
-	if len(srcSlice) != len(dstSlice){
+	if len(srcSlice) != len(dstSlice) {
 		return false
 	}
 
-	dataC := make(chan interface{},1)
-	resC := make(chan bool,1)
+	dataC := make(chan interface{}, 1)
+	resC := make(chan bool, 1)
 	wg := &sync.WaitGroup{}
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		for _,e := range srcSlice{
+		for _, e := range srcSlice {
 			dataC <- e
 		}
 	}()
@@ -70,8 +70,8 @@ func isSame(src,dst interface{}) bool  {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		for _,e := range dstSlice{
-			if <- dataC != e{
+		for _, e := range dstSlice {
+			if <-dataC != e {
 				resC <- false
 			}
 		}
@@ -82,7 +82,7 @@ func isSame(src,dst interface{}) bool  {
 		close(resC)
 	}()
 
-	for res := range resC{
+	for res := range resC {
 		return res
 	}
 

@@ -69,7 +69,7 @@ func Test_dispatcher_Add(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			time.Sleep(time.Millisecond * 10)
-			NewDispatcher(tt.fields.Cap).Add(tt.args.jobs...)
+			NewDispatcher(tt.fields.Cap).Go(tt.args.jobs...)
 		})
 		time.Sleep(3 * time.Second)
 	}

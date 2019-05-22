@@ -102,25 +102,24 @@ func Test_isSame(t *testing.T) {
 	}{
 		{
 			args: args{
-				src: []string{"1","2","3","4","5"},
-				dst: []string{"1","2","3","4","5"},
+				src: []string{"1", "2", "3", "4", "5"},
+				dst: []string{"1", "2", "3", "4", "5"},
 			},
 			want: true,
 		},
 
 		{
 			args: args{
-				src: []int{1,2,3,4,5},
-				dst: []int{1,2,3,4,5},
+				src: []int{1, 2, 3, 4, 5},
+				dst: []int{1, 2, 3, 4, 5},
 			},
 			want: true,
 		},
 
-
 		{
 			args: args{
-				src: []string{"1","2","3","4","9"},
-				dst: []string{"1","2","3","4","5"},
+				src: []string{"1", "2", "3", "4", "9"},
+				dst: []string{"1", "2", "3", "4", "5"},
 			},
 			want: false,
 		},
