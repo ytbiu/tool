@@ -20,6 +20,7 @@ type dispatcher struct {
 	exitC        chan struct{}
 	workCancelCs []chan struct{}
 	resizePeriod time.Duration
+	timer        *time.Timer
 }
 
 func NewDispatcher(maxLimit int32) Dispatcher {
@@ -27,9 +28,10 @@ func NewDispatcher(maxLimit int32) Dispatcher {
 		poolSize:     maxLimit,
 		jobC:         make(chan func(), maxLimit),
 		resizePeriod: time.Second * 3,
+		timer:        time.NewTimer(time.Second * 3),
 	}
 
-	d.workCancelCs = make([]chan struct{},maxLimit)
+	d.workCancelCs = make([]chan struct{}, maxLimit)
 	for i := 0; i < int(maxLimit); i++ {
 		d.workCancelCs[i] = make(chan struct{})
 	}
@@ -53,6 +55,7 @@ func (d *dispatcher) dispatch() {
 }
 
 func (d *dispatcher) Go(jobs ...func()) {
+	d.timer.Reset(time.Second * 3)
 	for _, job := range jobs {
 		if job == nil {
 			continue
@@ -61,7 +64,7 @@ func (d *dispatcher) Go(jobs ...func()) {
 		select {
 		case <-d.exitC:
 			return
-		case <-time.After(waitSeconds):
+		case <-d.timer.C:
 			d.logWarning()
 			return
 		case d.jobC <- job:
