@@ -5,13 +5,23 @@ import (
 	"unsafe"
 )
 
-func StrAppend(sep string, vs ...string) string {
+// append with sep
+func AppendWith(sep string, vs ...string) string {
 	var builder strings.Builder
 	for i, v := range vs {
 		builder.WriteString(v)
 		if i < len(vs)-1 {
 			builder.WriteString(sep)
 		}
+	}
+
+	return builder.String()
+}
+
+func Append(vs ...string) string {
+	var builder strings.Builder
+	for _, v := range vs {
+		builder.WriteString(v)
 	}
 
 	return builder.String()

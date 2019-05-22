@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestStrAppend(t *testing.T) {
+func TestAppendWith(t *testing.T) {
 	type args struct {
 		sep string
 		vs  []string
@@ -25,8 +25,8 @@ func TestStrAppend(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := StrAppend(tt.args.sep, tt.args.vs...); got != tt.want {
-				t.Errorf("StrAppend() = %v, want %v", got, tt.want)
+			if got := AppendWith(tt.args.sep, tt.args.vs...); got != tt.want {
+				t.Errorf("AppendWith() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -109,6 +109,31 @@ func TestAnyIsBlack(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := AnyIsBlack(tt.args.vs...); got != tt.want {
 				t.Errorf("AnyIsBlack() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestAppend(t *testing.T) {
+	type args struct {
+		vs []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			args: args{
+				vs: []string{"a", "b", "c"},
+			},
+			want: "abc",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := Append(tt.args.vs...); got != tt.want {
+				t.Errorf("Append() = %v, want %v", got, tt.want)
 			}
 		})
 	}

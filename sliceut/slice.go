@@ -23,10 +23,10 @@ func contains(src []interface{}, target interface{}) bool {
 	return false
 }
 
-func Remove(src interface{}, target interface{}) []interface{} {
-	infSlice := toInfSlice(src)
+func Remove(srcSlice interface{}, member interface{}) []interface{} {
+	infSlice := toInfSlice(srcSlice)
 	for i, e := range infSlice {
-		if e == target {
+		if e == member {
 			return append(infSlice[:i], infSlice[i+1:]...)
 		}
 	}
@@ -46,7 +46,7 @@ func toInfSlice(src interface{}) []interface{} {
 	return infSlice
 }
 
-func isSame(src, dst interface{}) bool {
+func IsSame(src, dst interface{}) bool {
 
 	srcSlice := toInfSlice(src)
 	dstSlice := toInfSlice(dst)

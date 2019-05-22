@@ -90,7 +90,7 @@ func TestRemove(t *testing.T) {
 	}
 }
 
-func Test_isSame(t *testing.T) {
+func Test_IsSame(t *testing.T) {
 	type args struct {
 		src interface{}
 		dst interface{}
@@ -126,8 +126,8 @@ func Test_isSame(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := isSame(tt.args.src, tt.args.dst); got != tt.want {
-				t.Errorf("isSame() = %v, want %v", got, tt.want)
+			if got := IsSame(tt.args.src, tt.args.dst); got != tt.want {
+				t.Errorf("IsSame() = %v, want %v", got, tt.want)
 			}
 		})
 	}
