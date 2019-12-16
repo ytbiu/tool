@@ -26,4 +26,3 @@ func JobPipeline(jobs ...func() interface{}) chan interface{} {
 
 	return resC
 }
-

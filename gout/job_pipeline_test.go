@@ -6,11 +6,11 @@ import (
 
 func TestJobPipeline(t *testing.T) {
 
-	job1 := func() interface{}{
+	job1 := func() interface{} {
 		return 1
 	}
 
-	job2 := func() interface{}{
+	job2 := func() interface{} {
 		return 2
 	}
 
@@ -23,7 +23,7 @@ func TestJobPipeline(t *testing.T) {
 	}{
 		{
 			args: args{
-				jobs: []func()interface{}{job1,job2},
+				jobs: []func() interface{}{job1, job2},
 			},
 		},
 	}
@@ -32,13 +32,13 @@ func TestJobPipeline(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			gotC := JobPipeline(tt.args.jobs...)
-			for res := range gotC{
+			for res := range gotC {
 
-				if res.(int) == 1 || res.(int) == 2{
+				if res.(int) == 1 || res.(int) == 2 {
 					i++
 					continue
-				}else{
-					t.Fatal(i,res)
+				} else {
+					t.Fatal(i, res)
 				}
 			}
 		})

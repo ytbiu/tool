@@ -2,18 +2,18 @@ package asyncut
 
 import (
 	"log"
+	"math/rand"
 	"runtime/debug"
 	"sync/atomic"
 	"time"
-	"math/rand"
 )
 
 const (
 	defaultWaitSeconds = 1 * time.Second
-	defaultPoolSize = 10
-	)
+	defaultPoolSize    = 10
+)
 
-func init()  {
+func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
@@ -34,19 +34,19 @@ type dispatcher struct {
 
 func NewDispatcher(poolSize ...int) Dispatcher {
 	size := defaultPoolSize
-	if len(poolSize) > 0 && poolSize[0] >0{
+	if len(poolSize) > 0 && poolSize[0] > 0 {
 		size = poolSize[0]
 	}
 
 	d := &dispatcher{
 		poolSize:     int32(size),
-		jobCGroup:    make([]chan func(),0, size),
+		jobCGroup:    make([]chan func(), 0, size),
 		resizePeriod: time.Second * 3,
 		timeoutTimer: time.NewTimer(defaultWaitSeconds),
 	}
 
-	for i:=0;i<size;i++{
-		d.jobCGroup = append(d.jobCGroup, make(chan func(),10))
+	for i := 0; i < size; i++ {
+		d.jobCGroup = append(d.jobCGroup, make(chan func(), 10))
 	}
 
 	go d.resizeLoop()
@@ -123,14 +123,14 @@ func (d *dispatcher) resizeLoop() {
 	}
 }
 
-func (d *dispatcher) resize(job ...func())  {
+func (d *dispatcher) resize(job ...func()) {
 	if d.getRunningJob() == d.poolSize {
 		go func() {
 			defer catch()
 			jobC := make(chan func())
 			d.jobCGroup = append(d.jobCGroup, jobC)
 			d.listenJob(jobC)
-			if len(job) > 0{
+			if len(job) > 0 {
 				jobC <- job[0]
 			}
 		}()
