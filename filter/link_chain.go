@@ -13,28 +13,9 @@ func NewLinkChain() iface.Chain {
 }
 
 // 追加过滤器
-func (lc *LinkChain) Append(filter iface.Filter) {
-	if filter == nil {
-		return
-	}
-
-	defer func() {
-		lc.size++
-	}()
-
-	if lc.first == nil {
-		lc.first = filter
-		return
-	}
-
-	currentFilter := lc.first
-	for i := 0; i < lc.size; i++ {
-		if currentFilter.Next() != nil {
-			currentFilter = currentFilter.Next()
-			continue
-		}
-
-		currentFilter.SetNext(filter)
+func (lc *LinkChain) Append(filters ...iface.Filter) {
+	for _, filter := range filters {
+		lc.add(filter)
 	}
 }
 
@@ -78,4 +59,29 @@ func (lc *LinkChain) check(f iface.Filter, content interface{}) bool {
 	}
 
 	return lc.check(f.Next(), content)
+}
+
+func (lc *LinkChain) add (filter iface.Filter) {
+	if filter == nil {
+		return
+	}
+
+	defer func() {
+		lc.size++
+	}()
+
+	if lc.first == nil {
+		lc.first = filter
+		return
+	}
+
+	currentFilter := lc.first
+	for i := 0; i < lc.size; i++ {
+		if currentFilter.Next() != nil {
+			currentFilter = currentFilter.Next()
+			continue
+		}
+
+		currentFilter.SetNext(filter)
+	}
 }
