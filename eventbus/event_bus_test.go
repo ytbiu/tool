@@ -1,4 +1,4 @@
-package eventut
+package eventbus
 
 import (
 	"context"

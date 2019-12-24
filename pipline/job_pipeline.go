@@ -1,10 +1,12 @@
-package gout
+package pipline
 
 import "sync"
 
-func JobPipeline(jobs ...func() interface{}) chan interface{} {
-
+// 异步执行jobs 将结果汇总至consume 中的入参chan中待消费
+func JobPipeline(consume func(chan interface{}), jobs ...func() interface{}) {
 	resC := make(chan interface{}, 100)
+	go consume(resC)
+
 	wg := sync.WaitGroup{}
 	for _, job := range jobs {
 
@@ -23,6 +25,4 @@ func JobPipeline(jobs ...func() interface{}) chan interface{} {
 		wg.Wait()
 		close(resC)
 	}()
-
-	return resC
 }

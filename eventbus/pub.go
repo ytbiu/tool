@@ -1,4 +1,4 @@
-package eventut
+package eventbus
 
 type Publisher interface {
 	Publish(event interface{})
