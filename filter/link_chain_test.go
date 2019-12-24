@@ -115,9 +115,8 @@ func TestCheck(t *testing.T) {
 		linkFilter := NewLinkFilter(mockFilter)
 		linkFilter1 := NewLinkFilter(mockFilter1)
 
-
 		linkChain := &LinkChain{}
-		linkChain.Append(linkFilter,linkFilter1)
+		linkChain.Append(linkFilter, linkFilter1)
 
 		res := linkChain.Check(nil)
 		a.Equal(false, res)

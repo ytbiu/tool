@@ -61,7 +61,7 @@ func (lc *LinkChain) check(f iface.Filter, content interface{}) bool {
 	return lc.check(f.Next(), content)
 }
 
-func (lc *LinkChain) add (filter iface.Filter) {
+func (lc *LinkChain) add(filter iface.Filter) {
 	if filter == nil {
 		return
 	}
